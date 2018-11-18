@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+
+  builder:
+    command: /usr/local/bin/build.sh
+    image: advent-go-build
+    build:
+      context: .
+      target: builder
+    volumes:
+    - ./src:/go/src/advent
+
+  main:
+    image: advent-go
+    build:
+      context: .
