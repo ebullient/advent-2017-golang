@@ -82,6 +82,10 @@ func testAll(v int, values []int) int {
 func findDivisors(data []string) int {
 	var values []int
 
+  // Given a, b, c ...
+  // a: testAll(a, [])
+  // b: testAll(b, [a])
+  // c: testAll(c, [a, b])
 	for idx := range data {
 		i, _ := strconv.Atoi(data[idx])
 		r := testAll(i, values)
