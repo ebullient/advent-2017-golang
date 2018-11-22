@@ -20,7 +20,7 @@ func TestSampleData_2part1(t *testing.T) {
 	for _, pair := range test_2part1 {
 		reader := strings.NewReader(pair.input)
 		v := Checksum(reader)
-		verify(pair, v, t)
+		verifyTestPair(pair, v, t)
 	}
 }
 
@@ -41,7 +41,7 @@ func TestSampleData_2part2(t *testing.T) {
 	for _, pair := range test_2part2 {
 		reader := strings.NewReader(pair.input)
 		v := DivisibleChecksum(reader)
-		verify(pair, v, t)
+		verifyTestPair(pair, v, t)
 	}
 }
 

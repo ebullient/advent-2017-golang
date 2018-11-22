@@ -29,7 +29,7 @@ func TestSampleData_1part1(t *testing.T) {
   for _, pair := range test_1part1 {
     reader := strings.NewReader(pair.input)
     v := Captcha(reader)
-		verify(pair, v, t)
+		verifyTestPair(pair, v, t)
   }
 }
 
@@ -50,7 +50,7 @@ func TestSampleData_1part2(t *testing.T) {
   for _, pair := range test_1part2 {
     b := []byte(pair.input)
     v := HalfCaptcha(b)
-		verify(pair, v, t)
+		verifyTestPair(pair, v, t)
   }
 }
 
