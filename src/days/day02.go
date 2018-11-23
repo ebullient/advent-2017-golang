@@ -2,7 +2,7 @@ package days
 
 import (
 	"encoding/csv"
-//	"fmt"
+	//	"fmt"
 	"io"
 	"strconv"
 )
@@ -27,8 +27,8 @@ func Checksum(fileReader io.Reader) int {
 	var (
 		max int = 0
 		min int = 0
-    sum int = 0
-  )
+		sum int = 0
+	)
 
 	csvData := ReadSpreadsheet(fileReader)
 
@@ -37,10 +37,10 @@ func Checksum(fileReader io.Reader) int {
 		min = 0
 		for col := range csvData[row] {
 			i, _ := strconv.Atoi(csvData[row][col])
-			if ( i > max ) {
+			if i > max {
 				max = i
 			}
-			if ( min == 0 || i < min ) {
+			if min == 0 || i < min {
 				min = i
 			}
 			//fmt.Println(col,"::", i, "::", min, max)
@@ -56,12 +56,12 @@ func Checksum(fileReader io.Reader) int {
 // operation is a whole number. They would like you to find those
 // numbers on each line, divide them, and add up each line's result.
 func divide(a int, b int) int {
-	if ( a > b ) {
-		if ( a % b == 0 ) {
+	if a > b {
+		if a%b == 0 {
 			return a / b
 		}
-	} else if ( b > a) {
-		if ( b % a == 0 ) {
+	} else if b > a {
+		if b%a == 0 {
 			return b / a
 		}
 	}
@@ -69,10 +69,10 @@ func divide(a int, b int) int {
 }
 
 func testAll(v int, values []int) int {
-//	fmt.Println("compare", v, values)
+	//	fmt.Println("compare", v, values)
 	for i := range values {
 		r := divide(v, values[i])
-		if ( r != 0 ) {
+		if r != 0 {
 			return r
 		}
 	}
@@ -82,20 +82,20 @@ func testAll(v int, values []int) int {
 func findDivisors(data []string) int {
 	var values []int
 
-  // Given a, b, c ...
-  // a: testAll(a, [])
-  // b: testAll(b, [a])
-  // c: testAll(c, [a, b])
+	// Given a, b, c ...
+	// a: testAll(a, [])
+	// b: testAll(b, [a])
+	// c: testAll(c, [a, b])
 	for idx := range data {
 		i, _ := strconv.Atoi(data[idx])
 		r := testAll(i, values)
-		if ( r != 0 ) {
-//			fmt.Println("findDivisors", data, r)
+		if r != 0 {
+			//			fmt.Println("findDivisors", data, r)
 			return r
 		}
 		values = append(values, i)
 	}
-//	fmt.Println("findDivisors", data, values, 0)
+	//	fmt.Println("findDivisors", data, values, 0)
 	return 0
 }
 
@@ -108,4 +108,3 @@ func DivisibleChecksum(fileReader io.Reader) int {
 	}
 	return sum
 }
-

@@ -1,22 +1,23 @@
 package days
+
 import (
 	"testing"
 )
 
 type testpair struct {
-  input string
-  expected int
+	input    string
+	expected int
 }
 
 type testIntPair struct {
-  input int
-  expected int
+	input    int
+	expected int
 }
 
 func check(e error) {
-  if e != nil {
-    panic(e)
-  }
+	if e != nil {
+		panic(e)
+	}
 }
 
 func verifyTestPair(pair testpair, v int, t *testing.T) {
