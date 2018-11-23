@@ -61,3 +61,91 @@ func Spiral(index int) int {
   }
 }
 
+type Key struct {
+  x, y int
+}
+
+func GetValue(grid map[Key]int, x int, y int) int {
+  if ( x == 0 && y == 0 ) {
+    return 1
+  }
+	var total int = 0
+  //fmt.Println(grid[Key{x-1,y+1}], grid[Key{x,y+1}], grid[Key{x+1,y+1}])
+  total = total + grid[Key{x-1, y+1}]
+  total = total + grid[Key{x,   y+1}]
+  total = total + grid[Key{x+1, y+1}]
+	//fmt.Println(grid[Key{x-1,y}], "X", grid[Key{x+1,y}])
+  total = total + grid[Key{x-1, y}]
+  total = total + grid[Key{x+1, y}]
+	//fmt.Println(grid[Key{x-1,y-1}], grid[Key{x,y-1}], grid[Key{x+1,y-1}])
+  total = total + grid[Key{x-1, y-1}]
+  total = total + grid[Key{x,   y-1}]
+  total = total + grid[Key{x+1, y-1}]
+  //fmt.Printf("Value {%d,%d} = %d\n",x,y,total)
+	return total
+}
+
+func pretty(key Key) string {
+  switch key {
+    case Key{1,0}: return "\u2192"
+    case Key{0,1}: return "\u2191"
+    case Key{-1,0}: return "\u2190"
+    case Key{0,-1}: return "\u2193"
+  }
+  return ""
+}
+
+func NextKey(grid map[Key]int, key Key, direction Key) (Key,Key) {
+  key.x = key.x + direction.x
+  key.y = key.y + direction.y
+  //fmt.Println("Current ", pretty(direction), key)
+
+  switch direction {
+    case Key{1,0}:
+      if ( grid[Key{key.x,key.y+1}] == 0 ) {
+				direction.x = 0
+				direction.y = 1
+			}
+			break
+    case Key{0,1}:
+      if ( grid[Key{key.x-1,key.y}] == 0 ) {
+				direction.x = -1
+				direction.y = 0
+      }
+      break
+    case Key{-1,0}:
+      if ( grid[Key{key.x,key.y-1}] == 0 ) {
+				direction.x = 0
+				direction.y = -1
+			}
+      break
+    case Key{0,-1}:
+      if ( grid[Key{key.x+1,key.y}] == 0 ) {
+				direction.x = 1
+				direction.y = 0
+			}
+      break
+    default:
+  }
+  return key, direction
+}
+
+func SpiralSum(index int, target int) int {
+	grid := make(map[Key]int)
+  var n int = 1
+  var key = Key {0, 0}
+  var direction = Key {1, 0}
+
+  for {
+    grid[key] = GetValue(grid, key.x, key.y)
+    if ( index > 0 && n >= index ) {
+			break // test values given index
+    }
+    if ( target > 0 && target < grid[key] ) {
+      break // value we're looking for
+    }
+    n++
+    key,direction = NextKey(grid, key, direction)
+  }
+  return grid[key]
+}
