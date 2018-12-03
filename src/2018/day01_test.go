@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-	"unicode"
 )
 
 var test_1part1 = []testStringIntPair{
@@ -24,18 +23,9 @@ var test_1part2 = []testStringIntPair{
 }
 
 func tune(freq int, delta string) int {
-	var (
-		m = 1
-		r = 0
-	)
-	delta = strings.TrimLeftFunc(delta, func(r rune) bool {
-		if r == '-' {
-			m = -1
-		}
-		return !unicode.IsNumber(r)
-	})
+	var r int = 0
 	i, _ := strconv.Atoi(delta)
-	r = freq + (m * i)
+	r = freq + i
 	//fmt.Println(freq, " + (", m, "*", delta, ") = ", r)
 	return r
 }
