@@ -14,18 +14,25 @@ type testDay2Boxes struct {
 	checksum int
 }
 
+type testDay2FabricBoxes struct {
+	input  string
+	common string
+}
+
 var test_2part1 = []testDay2Boxes{
 	{"abcdef bababc abbcde abcccd aabcdd abcdee ababab", 4, 3, 12},
 }
 
-var test_2part2 = []testDay2Boxes{}
+var test_2part2 = []testDay2FabricBoxes{
+	{"abcde fghij klmno pqrst fguij axcye wvxyz", "fgij"},
+}
 
-// Analyze a word. Return two integers with binary value:
-// If the word contains only 2 of a given letter, return 1, otherwise return 0
-// If the word contains only 3 of a given letter, return 1, otherwise return 0
-func CountLetters(word string) (int, int) {
+// Analyze an id. Return two integers with binary value:
+// If the id contains only 2 of a given letter, return 1, otherwise return 0
+// If the id contains only 3 of a given letter, return 1, otherwise return 0
+func CountLetters(id string) (int, int) {
 	count := map[rune]int{}
-	for _, r := range word {
+	for _, r := range id {
 		count[r] = count[r] + 1
 	}
 
@@ -44,11 +51,11 @@ func CountLetters(word string) (int, int) {
 	return twos, threes
 }
 
-func CalculateChecksum(words []string) (int, int, int) {
+func CalculateChecksum(ids []string) (int, int, int) {
 	twos := 0
 	threes := 0
-	for _, word := range words {
-		x, y := CountLetters(word)
+	for _, id := range ids {
+		x, y := CountLetters(id)
 		twos = twos + x
 		threes = threes + y
 	}
@@ -85,23 +92,64 @@ func TestInput_2part1(t *testing.T) {
 	fmt.Println("Day 2 / Part 1 Result", twos, threes, checksum)
 }
 
-func TestSampleData_2part2(t *testing.T) {
-	//	for _, sample.:= range test_2part2 {
-	//	delta := strings.Fields(sample.input)
+// --- PART 2 --------
 
-	//	freq := iterate(delta)
-	//	if freq != sample.expected {
-	//		t.Error("For", sample.input, "expected", sample.expected, "got", freq)
-	//	}
-	//	}
+func CompareId(first string, second string) (bool, string) {
+	diffs := 0
+	last := 0
+
+	for i := 0; i < len(first); i++ {
+		if first[i] != second[i] {
+			diffs++
+			if diffs >= 2 {
+				//fmt.Println("Bailing: ", first, second)
+				return false, ""
+			} else {
+				last = i
+			}
+		}
+	}
+
+	r := first[0:last] + first[(last+1):]
+
+	fmt.Println("FOUND", first, second, "-->", r)
+	return true, r
+}
+
+func CompareBoxIds(ids []string) string {
+	for _, first := range ids {
+		for _, second := range ids {
+			if first == second {
+				continue
+			}
+
+			found, common := CompareId(first, second)
+			if found {
+				return common
+			}
+		}
+	}
+	fmt.Println("Did not find any common box ids")
+	return ""
+}
+
+func TestSampleData_2part2(t *testing.T) {
+	for _, sample := range test_2part2 {
+
+		common := CompareBoxIds(strings.Fields(sample.input))
+
+		// expensive! but this is only a test...
+		if strings.Compare(sample.common, common) != 0 {
+			t.Error("For [", sample.input, "] expected [", sample.common, "] got [", common, "]")
+		}
+	}
 }
 
 func TestInput_2part2(t *testing.T) {
-	//	content, err := ioutil.ReadFile("day01_input.txt")
-	//	check(err)
+	content, err := ioutil.ReadFile("day02_input.txt")
+	check(err)
 
-	//	delta := strings.Fields(string(content))
-	//	freq := iterate(delta)
+	common := CompareBoxIds(strings.Fields(string(content)))
 
-	//	fmt.Println("Day 1 / Part 2 Result", freq)
+	fmt.Println("Day 2 / Part 2 Result", common)
 }
