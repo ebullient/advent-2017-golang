@@ -59,9 +59,9 @@ func iterate(delta []string) int {
 	var freq int = 0
 	seen := make(map[int]bool)
 
-	for i := 0; true; i = i + 1 {
+	for i := 0; true; i++ {
 		if i >= len(delta) {
-			i = 0
+			i = 0 // back to the beginning
 		}
 		freq = tune(freq, delta[i])
 
