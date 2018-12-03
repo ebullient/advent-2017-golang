@@ -1,9 +1,8 @@
 package days
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"io/ioutil"
 	"strconv"
 	"strings"
 	"testing"
@@ -17,7 +16,12 @@ var test_1part1 = []testStringIntPair{
 	{"-1 -2 -3", -6},
 }
 
-//var test_1part2 = []testStringIntPair{}
+var test_1part2 = []testStringIntPair{
+	{"+1 -2 +3 +1 +1 -2", 2},
+	{"+3 +3 +4 -2 -4", 10},
+	{"-6 +3 +8 +5 -6", 5},
+	{"+7 +7 -2 -7 -4", 14},
+}
 
 func tune(freq int, delta string) int {
 	var (
@@ -38,9 +42,8 @@ func tune(freq int, delta string) int {
 
 func TestSampleData_1part1(t *testing.T) {
 	for _, pair := range test_1part1 {
-
 		var freq int = 0
-		for _, delta := range strings.Split(pair.input, " ") {
+		for _, delta := range strings.Fields(pair.input) {
 			freq = tune(freq, delta)
 		}
 
@@ -51,41 +54,55 @@ func TestSampleData_1part1(t *testing.T) {
 }
 
 func TestInput_1part1(t *testing.T) {
-	f, err := os.Open("day01_input.txt")
+	content, err := ioutil.ReadFile("day01_input.txt")
 	check(err)
-	defer f.Close()
-
-	reader := bufio.NewReader(f)
-	_, err = reader.Peek(2)
-	check(err)
-
-	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
 
 	var freq int = 0
-	for scanner.Scan() {
-		freq = tune(freq, scanner.Text())
+	for _, delta := range strings.Fields(string(content)) {
+		freq = tune(freq, delta)
 	}
 
 	fmt.Println("Day 1 / Part 1 Result", freq)
 }
 
+func iterate(delta []string) int {
+	var freq int = 0
+	seen := make(map[int]bool)
+
+	for i := 0; true; i = i + 1 {
+		if i >= len(delta) {
+			i = 0
+		}
+		freq = tune(freq, delta[i])
+
+		_, present := seen[freq]
+		//fmt.Println(i, "] ", delta[i], freq, present)
+		if present {
+			return freq
+		}
+		seen[freq] = true
+	}
+
+	return 0
+}
+
 func TestSampleData_1part2(t *testing.T) {
-	//	for _, pair := range test_1part2 {
-	//		b := []byte(pair.input)
-	//		v := HalfCaptcha(b)
-	//		verifyTestPair(pair, v, t)
-	//	}
+	for _, pair := range test_1part2 {
+		delta := strings.Fields(pair.input)
+
+		freq := iterate(delta)
+		if freq != pair.expected {
+			t.Error("For", pair.input, "expected", pair.expected, "got", freq)
+		}
+	}
 }
 
 func TestInput_1part2(t *testing.T) {
-	//	content, err := ioutil.ReadFile("day01_input.txt")
-	//	check(err)
+	content, err := ioutil.ReadFile("day01_input.txt")
+	check(err)
 
-	//	content = bytes.TrimRightFunc(content, func(r rune) bool {
-	//		return (r < '0' || '9' < r)
-	//	})
+	delta := strings.Fields(string(content))
+	freq := iterate(delta)
 
-	//	v := HalfCaptcha(content)
-	//	fmt.Println("Day 1 / Part 2 Result", v)
+	fmt.Println("Day 1 / Part 2 Result", freq)
 }
