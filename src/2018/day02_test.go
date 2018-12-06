@@ -112,7 +112,7 @@ func CompareId(first string, second string) (bool, string) {
 
 	r := first[0:last] + first[(last+1):]
 
-	fmt.Println("FOUND", first, second, "-->", r)
+	//	fmt.Println("FOUND", first, second, "-->", r)
 	return true, r
 }
 
