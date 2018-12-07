@@ -103,6 +103,6 @@ func TestInput_3part1(t *testing.T) {
 	scanner := bufio.NewScanner(file)
 	conflicts, distinct := PlaceClaims(scanner)
 
-	fmt.Println("Day 4 / Part 1 Result", conflicts)
-	fmt.Println("Day 4 / Part 2 Result", distinct)
+	fmt.Println("Day 3 / Part 1 Result", conflicts)
+	fmt.Println("Day 3 / Part 2 Result", distinct)
 }
