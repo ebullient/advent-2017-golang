@@ -75,7 +75,7 @@ func PlaceClaims(scanner *bufio.Scanner) (int, string) {
 	}
 
 	id := ""
-	for key, _ := range distinct {
+	for key := range distinct {
 		id = key
 	}
 

@@ -11,6 +11,20 @@ services:
     volumes:
     - ./src:/go/src/advent
 
+  test2017:
+    command: go test
+    image: advent-go-build
+    working_dir: /go/src/advent/2017
+    volumes:
+    - ./src:/go/src/advent
+
+  test2018:
+    command: go test
+    image: advent-go-build
+    working_dir: /go/src/advent/2018
+    volumes:
+    - ./src:/go/src/advent
+
   main:
     image: advent-go
     build:

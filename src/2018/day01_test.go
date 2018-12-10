@@ -32,7 +32,7 @@ func tune(freq int, delta string) int {
 
 func TestSampleData_1part1(t *testing.T) {
 	for _, pair := range test_1part1 {
-		var freq int = 0
+		freq := 0
 		for _, delta := range strings.Fields(pair.input) {
 			freq = tune(freq, delta)
 		}
@@ -47,7 +47,7 @@ func TestInput_1part1(t *testing.T) {
 	content, err := ioutil.ReadFile("day01_input.txt")
 	check(err)
 
-	var freq int = 0
+	freq := 0
 	for _, delta := range strings.Fields(string(content)) {
 		freq = tune(freq, delta)
 	}
@@ -56,7 +56,7 @@ func TestInput_1part1(t *testing.T) {
 }
 
 func iterate(delta []string) int {
-	var freq int = 0
+	freq := 0
 	seen := make(map[int]bool)
 
 	for i := 0; true; i++ {
