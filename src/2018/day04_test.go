@@ -27,7 +27,7 @@ func (w WallRecord) String() string {
 type SleepLog struct {
 	asleep  int
 	minutes [60]int
-	entries []WallRecord
+	//	entries []WallRecord
 }
 
 var test4SampleInput = []string{
@@ -101,7 +101,7 @@ func GetID(text string) int {
 	return i
 }
 
-func ParseRecords(records []WallRecord) (map[int]SleepLog, int) {
+func ParseRecords(records []WallRecord) (map[int]SleepLog, int, int, int) {
 	logs := map[int]SleepLog{}
 
 	var (
@@ -109,15 +109,19 @@ func ParseRecords(records []WallRecord) (map[int]SleepLog, int) {
 		guard     SleepLog
 		last      int
 		mostSleep int
+		sameTime  int
 	)
 	sleepiest := -1
+	consistentTime := -1
+	consistentGuard := -1
+
 	for _, record := range records {
 		if record.text[0] == 'G' {
 			id = GetID(record.text)
 			last = -1
 		}
 		guard = logs[id]
-		guard.entries = append(guard.entries, record)
+		//	guard.entries = append(guard.entries, record)
 
 		switch record.text[0] {
 		case 'f':
@@ -127,6 +131,11 @@ func ParseRecords(records []WallRecord) (map[int]SleepLog, int) {
 				guard.asleep += record.minute - last
 				for i := last; i < record.minute; i++ {
 					guard.minutes[i]++
+					if guard.minutes[i] > sameTime {
+						sameTime = guard.minutes[i]
+						consistentTime = i
+						consistentGuard = id
+					}
 				}
 				if guard.asleep > mostSleep {
 					mostSleep = guard.asleep
@@ -138,7 +147,7 @@ func ParseRecords(records []WallRecord) (map[int]SleepLog, int) {
 		logs[id] = guard
 	}
 
-	return logs, sleepiest
+	return logs, sleepiest, consistentTime, consistentGuard
 }
 
 func FindBestMinute(log SleepLog) int {
@@ -162,9 +171,15 @@ func TestSampleData_4part1(t *testing.T) {
 		t.Error("Bad sort! Bad!")
 	}
 
-	parsed, sleepiest := ParseRecords(sorted)
+	parsed, sleepiest, consistentTime, consistentGuard := ParseRecords(sorted)
 	if sleepiest != 10 {
 		t.Error("Expected Guard #10 to be sleepiest, got", sleepiest)
+	}
+	if consistentGuard != 99 {
+		t.Error("Expected Guard #99 to be most consistently asleep, got", consistentGuard)
+	}
+	if consistentTime != 45 {
+		t.Error("Expected minute 45 as most consistently asleep, got", consistentTime)
 	}
 
 	guard10 := parsed[10]
@@ -182,15 +197,16 @@ func TestSampleData_4part1(t *testing.T) {
 	}
 }
 
-func TestInput_4part1(t *testing.T) {
+func TestInput_4(t *testing.T) {
 	content, err := ioutil.ReadFile("day04_input.txt")
 	check(err)
 
 	wallWriting := strings.Split(string(content), "\n")
 	records := SortLog(wallWriting)
-	parsed, sleepiest := ParseRecords(records)
+	parsed, sleepiest, consistentGuard, consistentTime := ParseRecords(records)
 	best := FindBestMinute(parsed[sleepiest])
 	//fmt.Println(sleepiest, parsed[sleepiest], best)
 
 	fmt.Println("Day 4 / Part 1 Result", sleepiest*best)
+	fmt.Println("Day 4 / Part 2 Result", consistentGuard*consistentTime)
 }
