@@ -200,8 +200,10 @@ func TestSampleData_4part1(t *testing.T) {
 func TestInput_4(t *testing.T) {
 	content, err := ioutil.ReadFile("day04_input.txt")
 	check(err)
-
 	wallWriting := strings.Split(string(content), "\n")
+
+	defer elapsed("TestInput_4")() // time execution of the rest
+
 	records := SortLog(wallWriting)
 	parsed, sleepiest, consistentGuard, consistentTime := ParseRecords(records)
 	best := FindBestMinute(parsed[sleepiest])
