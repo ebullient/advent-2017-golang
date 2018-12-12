@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+type testStringStringPair struct {
+	input    string
+	expected string
+}
+
 type testStringIntPair struct {
 	input    string
 	expected int
