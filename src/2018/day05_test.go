@@ -19,11 +19,6 @@ var test_polymers = []testStringStringPair{
 	{"dabAcCaCBAcCcaDA", "dabCBAcaDA"},
 }
 
-type Chunk struct {
-	index   int
-	content string
-}
-
 func Reactive(x byte, y byte) bool {
 	if x > y {
 		return x-y == 32
@@ -89,4 +84,64 @@ func TestInput_5part1(t *testing.T) {
 	//fmt.Println(len(s))
 	result := RepeatReduce(s)
 	fmt.Println("Day 5 / Part 1 Result", len(result))
+}
+
+type PolymerImprovement struct {
+	unit    rune
+	polymer string
+}
+
+func RemoveUnit(attempt PolymerImprovement, done chan<- PolymerImprovement) {
+	result := strings.Replace(attempt.polymer, string(attempt.unit), "", -1)
+	result = strings.Replace(result, string(attempt.unit+32), "", -1)
+	result = RepeatReduce(result)
+	attempt.polymer = result
+	done <- attempt
+}
+
+func TestSampleData_5part2(t *testing.T) {
+	polymer := "dabAcCaCBAcCcaDA"
+	done := make(chan PolymerImprovement)
+	go RemoveUnit(PolymerImprovement{'A', polymer}, done)
+	go RemoveUnit(PolymerImprovement{'B', polymer}, done)
+	go RemoveUnit(PolymerImprovement{'C', polymer}, done)
+	go RemoveUnit(PolymerImprovement{'D', polymer}, done)
+
+	shortest := len(polymer)
+	for i := 0; i < 4; i++ {
+		result := <-done
+		x := len(result.polymer)
+		if x < shortest {
+			shortest = x
+		}
+	}
+	if shortest != 4 {
+		t.Error("Expected", 4, "got", shortest)
+	}
+}
+
+func TestInput_5part2(t *testing.T) {
+	content, err := ioutil.ReadFile("day05_input.txt")
+	s := strings.TrimSpace(string(content))
+	check(err)
+
+	defer elapsed("Day 5 / Part 2")() // time execution of the rest
+
+	done := make(chan PolymerImprovement)
+	for i := 'A'; i <= 'Z'; i++ {
+		go RemoveUnit(PolymerImprovement{i, s}, done)
+	}
+
+	unit := ""
+	shortest := len(s)
+	for i := 'A'; i <= 'Z'; i++ {
+		result := <-done
+		x := len(result.polymer)
+		if x < shortest {
+			shortest = x
+			unit = string(result.unit)
+		}
+	}
+
+	fmt.Println("Day 5 / Part 2 Result", shortest, unit)
 }
