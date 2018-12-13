@@ -34,6 +34,6 @@ func check(e error) {
 func elapsed(what string) func() {
 	start := time.Now()
 	return func() {
-		fmt.Printf("%s took %v\n", what, time.Since(start))
+		fmt.Printf("\t\t-> %v\n", time.Since(start))
 	}
 }

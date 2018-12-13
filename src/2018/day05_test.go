@@ -77,7 +77,7 @@ func TestInput_5part1(t *testing.T) {
 	content, err := ioutil.ReadFile("day05_input.txt")
 	check(err)
 
-	defer elapsed("Day 5 / Part 1")() // time execution of the rest
+	defer elapsed("TestInput_5part1")() // time execution of the rest
 
 	s := strings.TrimSpace(string(content))
 
@@ -125,7 +125,7 @@ func TestInput_5part2(t *testing.T) {
 	s := strings.TrimSpace(string(content))
 	check(err)
 
-	defer elapsed("Day 5 / Part 2")() // time execution of the rest
+	defer elapsed("TestInput_5part2")() // time execution of the rest
 
 	done := make(chan PolymerImprovement)
 	for i := 'A'; i <= 'Z'; i++ {
