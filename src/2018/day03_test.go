@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"strconv"
 	"strings"
 	"testing"
 )
@@ -24,17 +23,6 @@ type Square struct {
 var test_3part1 = []testFabricClaim{
 	{"#1 @ 1,3: 1x3\n#2 @ 1,3: 3x1\n#3 @ 1,3: 2x2", 3, ""},
 	{"#1 @ 1,3: 4x4\n#2 @ 3,1: 4x4\n#3 @ 5,5: 2x2", 4, "3"},
-}
-
-//var test_3part2 = []testDay2FabricBoxes{
-//}
-
-func ToInt(input string) int {
-	i, err := strconv.Atoi(input)
-	if err != nil {
-		panic(err)
-	}
-	return i
 }
 
 func DefineClaim(fabric map[Square][]string, id string, start Square, width int, height int) {

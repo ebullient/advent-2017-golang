@@ -2,6 +2,7 @@ package days
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -29,6 +30,14 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+func ToInt(input string) int {
+	i, err := strconv.Atoi(input)
+	if err != nil {
+		panic(err)
+	}
+	return i
 }
 
 func elapsed(what string) func() {
