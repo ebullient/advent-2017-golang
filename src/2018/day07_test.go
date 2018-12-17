@@ -114,7 +114,7 @@ func CreateWork(numWorkers int, baseDuration int) *Work {
 	work.ticks = -1 // increment to 0 at start
 	work.baseDuration = baseDuration
 	work.workers = make([]Worker, numWorkers)
-	for x, _ := range work.workers {
+	for x := range work.workers {
 		work.workers[x].id = fmt.Sprintf("Wkr-%d", x)
 	}
 	return &work

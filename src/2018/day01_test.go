@@ -23,7 +23,7 @@ var test_1part2 = []testStringIntPair{
 }
 
 func tune(freq int, delta string) int {
-	var r int = 0
+	var r int
 	i, _ := strconv.Atoi(delta)
 	r = freq + i
 	//fmt.Println(freq, " + (", m, "*", delta, ") = ", r)

@@ -94,7 +94,7 @@ func TestInput_2part1(t *testing.T) {
 
 // --- PART 2 --------
 
-func CompareId(first string, second string) (bool, string) {
+func CompareID(first string, second string) (bool, string) {
 	diffs := 0
 	last := 0
 
@@ -104,9 +104,8 @@ func CompareId(first string, second string) (bool, string) {
 			if diffs >= 2 {
 				//fmt.Println("Bailing: ", first, second)
 				return false, ""
-			} else {
-				last = i
 			}
+			last = i
 		}
 	}
 
@@ -123,7 +122,7 @@ func CompareBoxIds(ids []string) string {
 				continue
 			}
 
-			found, common := CompareId(first, second)
+			found, common := CompareID(first, second)
 			if found {
 				return common
 			}
