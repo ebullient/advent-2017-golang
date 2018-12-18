@@ -19,7 +19,7 @@ type MarbleGame struct {
 	allMarbles map[int]Marble
 	current    *Marble
 	lastMarble int
-	highScore	  int
+	highScore  int
 }
 
 func CreateGame(numPlayers int, lastMarble int) *MarbleGame {
@@ -62,7 +62,7 @@ func (game *MarbleGame) Place(value int) *Marble {
 
 func (game *MarbleGame) RemoveSeventh() int {
 	m := game.current
-	for i:=0; i < 7; i++ {
+	for i := 0; i < 7; i++ {
 		m = m.prev
 	}
 
@@ -92,9 +92,9 @@ func (game *MarbleGame) Play() int {
 
 	for i := 1; i <= game.lastMarble; i++ {
 		if i%23 == 0 {
-      more := game.RemoveSeventh()
+			more := game.RemoveSeventh()
 			game.scores[elf] += i + more
-			if ( game.scores[elf] > game.highScore ) {
+			if game.scores[elf] > game.highScore {
 				game.highScore = game.scores[elf]
 			}
 			//fmt.Println("23! Elf", elf, "gets", i, "+",more,"points")
@@ -129,8 +129,18 @@ func TestSampleData_9part1(t *testing.T) {
 }
 
 func TestInput_9part1(t *testing.T) {
+	defer elapsed("TestInput_9part1")() // time execution of the rest
 	//418 players; last marble is worth 70769 points
 	game := CreateGame(418, 70769)
 	highScore := game.Play()
 	fmt.Println("Day 9 / Part 1 Result", highScore)
+}
+
+func TestInput_9part(t *testing.T) {
+	defer elapsed("TestInput_9part2")() // time execution of the rest
+
+	//418 players; last marble is worth 70769 points
+	game := CreateGame(418, 7076900)
+	highScore := game.Play()
+	fmt.Println("Day 9 / Part 2 Result", highScore)
 }
