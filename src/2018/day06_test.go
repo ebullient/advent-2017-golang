@@ -81,13 +81,6 @@ var test_6part1 = []Point{
 	{8, 9},
 }
 
-func Abs(i int) int {
-	if i < 0 {
-		return -i
-	}
-	return i
-}
-
 var MdConflict = Point{-2, -2}
 
 func FindMD(origin Point, grid Grid, coords []Point) {
