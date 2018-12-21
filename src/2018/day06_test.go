@@ -10,10 +10,6 @@ import (
 	"testing"
 )
 
-type Point struct {
-	x, y int
-}
-
 type PointInfo struct {
 	name    string
 	nearest Point

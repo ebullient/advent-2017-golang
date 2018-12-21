@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+type Point struct {
+	x, y int
+}
+
 type testStringStringPair struct {
 	input    string
 	expected string
