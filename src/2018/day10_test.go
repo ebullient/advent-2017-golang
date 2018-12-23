@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-var test_10part1 = []string{
+var test_10 = []string{
 	"position=< 9,  1> velocity=< 0,  2>",
 	"position=< 7,  0> velocity=<-1,  0>",
 	"position=< 3, -2> velocity=<-1,  1>",
@@ -94,7 +94,6 @@ func MovePoints(ns *NightSky) (Point, Point, int) {
 		ns.lights[i] = next
 	}
 	box := Point{max.x - min.x, max.y - min.y}
-	fmt.Println("area:", box, box.x*box.y)
 	return min, max, box.x * box.y
 }
 
@@ -123,36 +122,37 @@ func Iterate(ns *NightSky) {
 		max Point
 		a   int
 	)
+	seconds := 0
 	area := 0
-	carryOn := true
-	for carryOn {
+	for {
 		min, max, a = MovePoints(ns)
+		if a >= area &&  area != 0 {
+			break
+		}
 		if a < 30000 {
 			PlotLights(ns, min, max)
 		}
-		carryOn = a < area || area == 0
 		area = a
+		seconds++
 	}
+	fmt.Println("Total seconds:", seconds)
 }
 
-func TestSampleData_10part1(t *testing.T) {
-	ns := ParseLights(test_10part1)
+func TestSampleData_10(t *testing.T) {
+	ns := ParseLights(test_10)
 	Iterate(ns)
 }
 
-func TestInput_10part1(t *testing.T) {
+func TestInput_10(t *testing.T) {
 	content, err := ioutil.ReadFile("day10_input.txt")
 	check(err)
 
-	defer elapsed("TestInput_10part1")() // time execution
+	defer elapsed("TestInput_10")() // time execution
 
 	list := strings.Split(strings.TrimSpace(string(content)), "\n")
 	ns := ParseLights(list)
 	Iterate(ns)
 
-	fmt.Println("Day 10 / Part 1 Result", "")
+	fmt.Println("Day 10 Result", "")
 }
 
-func TestInput_10part(t *testing.T) {
-	// fmt.Println("Day 10 / Part 2 Result", "")
-}
